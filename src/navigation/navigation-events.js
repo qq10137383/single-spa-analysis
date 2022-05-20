@@ -175,6 +175,10 @@ if (isInBrowser) {
     return originalRemoveEventListener.apply(this, arguments);
   };
 
+  // 拦截history.pushState、history.replaceState，调用这两个方法时执行
+  // reroute，在reroute中激活和卸载微应用
+  // 只拦截hashchange、popstate事件是不够的，因为history.pushState和history.replaceState
+  // 不会触发popstate事件，而vue router在切换路由时会调用pushState、replaceState
   window.history.pushState = patchedUpdateState(
     window.history.pushState,
     "pushState"
